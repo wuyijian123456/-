@@ -6,4 +6,5 @@ venv/
 .env
 allure-report/
 allure-results/
-.venv
+.venv/
+.idea/
