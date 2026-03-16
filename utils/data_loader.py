@@ -27,30 +27,30 @@ def load_yaml(file_path):
         raise
 
 
-    def write_yaml(yaml_path,data):
-        try:
-            with open(full_path, 'w', encoding='utf-8') as f:
-                yaml.dump(data, f)
-        except FileNotFoundError:
-            print(f"错误: 数据文件未找到 at {full_path}")
-            raise
-        except yaml.YAMLError as e:
-            print(f"错误: 解析 YAML 文件失败 at {full_path}: {e}")
-            raise
+def write_yaml(yaml_path,data):
+    try:
+        with open(yaml_path, 'w', encoding='utf-8') as f:
+            yaml.dump(data, f)
+    except FileNotFoundError:
+        print(f"错误: 数据文件未找到 at {yaml_path}")
+        raise
+    except yaml.YAMLError as e:
+        print(f"错误: 解析 YAML 文件失败 at {yaml_path}: {e}")
+        raise
 
-    def del_yaml_key(yaml_path,key):
-        try:
-            with open(full_path, 'w', encoding='utf-8') as f:
-                data = yaml.safe_load(f)
-                if key in data:
-                    del data['key']
-                write_yaml(data,f)
-        except FileNotFoundError:
-            print(f"错误: 数据文件未找到 at {full_path}")
-            raise
-        except yaml.YAMLError as e:
-            print(f"错误: 解析 YAML 文件失败 at {full_path}: {e}")
-            raise
+def del_yaml_key(yaml_path,key):
+    try:
+        with open(yaml_path, 'w', encoding='utf-8') as f:
+            data = yaml.safe_load(f)
+            if key in data:
+                del data['key']
+            write_yaml(data,f)
+    except FileNotFoundError:
+        print(f"错误: 数据文件未找到 at {yaml_path}")
+        raise
+    except yaml.YAMLError as e:
+        print(f"错误: 解析 YAML 文件失败 at {full_path}: {e}")
+        raise
 
 
 
