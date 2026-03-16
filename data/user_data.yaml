@@ -1,0 +1,18 @@
+# data/user_data.yaml
+# 用户管理模块 - 获取用户信息的测试数据
+
+get_single_user:
+  - test_case: "使用有效ID查询用户"
+    user_id: 1
+    expected_status: 200
+    check_fields: true  # 是否校验返回的特定字段
+
+  - test_case: "使用另一个有效ID查询用户"
+    user_id: 5
+    expected_status: 200
+    check_fields: true
+
+  - test_case: "使用无效ID查询用户"
+    user_id: 9999
+    expected_status: 404
+    check_fields: false # 此用例不关心具体字段，只关心状态码

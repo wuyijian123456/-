@@ -1,0 +1,56 @@
+# data/post_data.yaml
+# 内容管理模块 - 创建文章的测试数据
+
+create_post:
+  - test_case: "成功创建一篇包含完整信息的文章"
+    severity: "blocker"
+    payload:
+      title: "The Art of Simplicity"
+      body: "Simplicity is the ultimate sophistication."
+      userId: 1
+    headers: {} # 无额外请求头
+    expected_status: 201
+    assertions:
+      - type: status_code
+        value: 201
+      - type: json_key_exists
+        key: id
+      - type: json_value_equals
+        key: "title"
+        value: "The Art of Simplicity"
+      - type: json_value_equals
+        key: "userId"
+        value: 1
+
+  - test_case: "创建文章时缺少必填字段 'title'"
+    severity: "critical"
+    payload:
+      body: "This post has no title."
+      userId: 1
+    headers: {}
+    expected_status: 201 # jsonplaceholder 对此很宽容，仍返回201
+    assertions:
+      - type: status_code
+        value: 201
+      - type: json_key_exists
+        key: id
+      - type: json_value_equals
+        key: "body"
+        value: "This post has no title."
+
+  - test_case: "创建文章时 userId 类型错误 (字符串而非数字)"
+    severity: "normal"
+    payload:
+      title: "Testing Type Mismatch"
+      body: "Sending userId as a string."
+      userId: "invalid_string_id"
+    headers: {}
+    expected_status: 201 # 同样，jsonplaceholder 仍会处理
+    assertions:
+      - type: status_code
+        value: 201
+      - type: json_key_exists
+        key: id
+      - type: json_value_equals
+        key: "userId"
+        value: "invalid_string_id" # 服务器原样返回了字符串
