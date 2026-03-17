@@ -1,12 +1,11 @@
 import pymysql
-import logging
+from utils.logger import Logger
 from utils.data_loader import *
-
-logger = logging.getLogger("APITest")
 
 
 class Database:
     def __init__(self, db_type="mysql"):
+        self.logger = Logger().get_logger()
         cfg = config[db_type]  # 直接从JSON取对应数据库配置
         self.conn = pymysql.connect(
             host=cfg["host"],
@@ -18,7 +17,7 @@ class Database:
             cursorclass=pymysql.cursors.DictCursor
         )
         self.cursor = self.conn.cursor()
-        logger.info(f"{db_type} 数据库连接成功")
+        self.logger.info(f"{db_type} 数据库连接成功")
 
     def query(self, sql, params=None):
         self.cursor.execute(sql, params or ())
@@ -32,7 +31,7 @@ class Database:
     def close(self):
         self.cursor.close()
         self.conn.close()
-        logger.info("数据库连接已关闭")
+        self.logger.info("数据库连接已关闭")
 
 
 # 使用示例

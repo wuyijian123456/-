@@ -4,12 +4,11 @@ import logging
 import logging.handlers
 import sys
 
-
 from utils.data_loader import load_config
 
 
 class ColoredFormatter(logging.Formatter):
-    """带颜色的日志格式化器"""
+    """带颜色的日志格式化器（仅用于控制台）"""
 
     COLORS = {
         'DEBUG': '\033[36m',  # 青色
@@ -25,27 +24,26 @@ class ColoredFormatter(logging.Formatter):
         self.use_color = use_color
 
     def format(self, record):
-        # 保存原始信息
         original_msg = record.msg
         levelname = record.levelname
 
         if self.use_color and levelname in self.COLORS:
-            # 为不同级别添加颜色
             colored_levelname = f"{self.COLORS[levelname]}{levelname}{self.COLORS['RESET']}"
             record.levelname = colored_levelname
 
-            # 为消息添加颜色
-            # colored_msg = f"{self.COLORS[levelname]}{original_msg}{self.COLORS['RESET']}"
-            # record.msg = colored_msg
-
-        # 调用父类的 format 方法
         result = super().format(record)
 
-        # 恢复原始信息
         record.msg = original_msg
         record.levelname = levelname
 
         return result
+
+
+class PlainFormatter(logging.Formatter):
+    """普通文本格式化器（用于文件输出，无颜色）"""
+
+    def __init__(self, fmt: str, datefmt: str):
+        super().__init__(fmt, datefmt)
 
 
 class LoggerConfig:
@@ -55,13 +53,7 @@ class LoggerConfig:
     def load_config(config_path: str = "config.json"):
         """加载 JSON 配置文件"""
         try:
-            # with open(config_path, 'r', encoding='utf-8') as f:
-            #     config = json.load(f)
-            #
-            # # 验证配置结构
-            # if 'logger' not in config:
-            #     raise ValueError("配置文件中缺少 'logger' 部分")
-            config =load_config(config_path)
+            config = load_config(config_path)
 
             logger_config = config['logger']
 
@@ -117,20 +109,18 @@ class Logger:
         # 清除已有的处理器
         self.logger.handlers.clear()
 
-        # 创建格式化器
-        formatter = ColoredFormatter(
-            fmt=self.config['logger']['format']['pattern'],
-            datefmt=self.config['logger']['format']['date_format'],
-            use_color=self.config['logger']['color']
-        )
+        # 获取配置参数
+        log_format = self.config['logger']['format']['pattern']
+        date_format = self.config['logger']['format']['date_format']
+        use_color = self.config['logger']['color']
 
-        # 添加控制台处理器
+        # 添加控制台处理器（带颜色）
         if self.config['logger']['console']['enabled']:
             console_handler = logging.StreamHandler(sys.stdout)
-            console_handler.setFormatter(formatter)
+            console_handler.setFormatter(ColoredFormatter(log_format, date_format, use_color))
             self.logger.addHandler(console_handler)
 
-        # 添加文件处理器
+        # 添加文件处理器（无颜色，使用普通格式化器）
         if self.config['logger']['file']['enabled']:
             log_path = self.config['logger']['file']['path']
             # 确保日志目录存在
@@ -144,7 +134,8 @@ class Logger:
                 backupCount=self.config['logger']['file']['backup_count'],
                 encoding='utf-8'
             )
-            file_handler.setFormatter(formatter)
+            # 关键改动：文件使用 PlainFormatter，不带颜色
+            file_handler.setFormatter(PlainFormatter(log_format, date_format))
             self.logger.addHandler(file_handler)
 
         self._initialized = True
@@ -169,10 +160,6 @@ class Logger:
         """记录 ERROR 级别日志"""
         self.logger.error(msg, *args, **kwargs)
 
-    # def critical(self, msg: str, *args, **kwargs):
-    #     """记录 CRITICAL 级别日志"""
-    #     self.logger.critical(msg, *args, **kwargs)
-
     def log(self, level: int, msg: str, *args, **kwargs):
         """记录指定级别的日志"""
         self.logger.log(level, msg, *args, **kwargs)
@@ -191,7 +178,6 @@ if __name__ == "__main__":
     logger.info("这是一条信息")
     logger.warning("这是一条警告")
     logger.error("这是一条错误")
-    # logger.critical("这是一条严重错误")
 
     # 也可以直接使用实例方法
     logger.info("使用实例方法记录信息")
