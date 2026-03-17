@@ -54,7 +54,7 @@ def del_yaml_key(yaml_path,key):
         raise
 
 
-def load_config(path="config.json"):
+def load_config(path="config.json",key=None):
     base_dir = os.path.dirname(os.path.abspath(__file__))
     # 拼接成完整的文件路径
     full_path = os.path.join(base_dir, '..', path)
@@ -63,7 +63,11 @@ def load_config(path="config.json"):
         raise FileNotFoundError(f"配置文件不存在: {path}")
 
     with open(full_path, 'r', encoding='utf-8') as f:
-        return json.load(f)
+        data= json.load(f)
+        if key  is not None:
+            data= data.get(key)
+        # print(data)
+        return data
 
 
 # 全局配置对象，直接导入就能用

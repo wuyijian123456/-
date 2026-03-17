@@ -1,13 +1,13 @@
 # utils/request_utils.py
 import requests
-from data_loader import config
+from utils.data_loader import *
 
 class RequestClient:
     """封装 requests 库的客户端，统一处理 base_url, headers, timeout 等"""
 
 
     def __init__(self):
-        Config = config['api']
+        Config = config.get('api')
         self.session = requests.Session()
         self.base_url = Config.get('base_url')
         self.timeout = Config.get('timeout')

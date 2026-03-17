@@ -4,11 +4,11 @@
         "log_level": "INFO"
     },
     "mysql": {
-        "host": "192.168.1.100",
+        "host": "8.130.99.203",
         "port": 3306,
-        "database": "api_test",
+        "database": "test",
         "username": "root",
-        "password": "123456",
+        "password": "admin",
         "charset": "utf8mb4"
     },
     "oracle": {
