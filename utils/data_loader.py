@@ -1,4 +1,5 @@
 # utils/data_loader.py
+import json
 import yaml
 import os
 
@@ -49,9 +50,24 @@ def del_yaml_key(yaml_path,key):
         print(f"错误: 数据文件未找到 at {yaml_path}")
         raise
     except yaml.YAMLError as e:
-        print(f"错误: 解析 YAML 文件失败 at {full_path}: {e}")
+        print(f"错误: 解析 YAML 文件失败 at {yaml_path}: {e}")
         raise
 
+
+def load_config(path="config.json"):
+    base_dir = os.path.dirname(os.path.abspath(__file__))
+    # 拼接成完整的文件路径
+    full_path = os.path.join(base_dir, '..', path)
+    """加载JSON配置文件"""
+    if not os.path.exists(full_path):
+        raise FileNotFoundError(f"配置文件不存在: {path}")
+
+    with open(full_path, 'r', encoding='utf-8') as f:
+        return json.load(f)
+
+
+# 全局配置对象，直接导入就能用
+config = load_config()
 
 
 

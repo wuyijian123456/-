@@ -1,0 +1,25 @@
+{
+    "log": {
+        "log_dir": "logs",
+        "log_level": "INFO"
+    },
+    "mysql": {
+        "host": "192.168.1.100",
+        "port": 3306,
+        "database": "api_test",
+        "username": "root",
+        "password": "123456",
+        "charset": "utf8mb4"
+    },
+    "oracle": {
+        "host": "192.168.1.101",
+        "port": 1521,
+        "database": "ORCL",
+        "username": "test_user",
+        "password": "test_password"
+    },
+    "api": {
+        "base_url": "https://jsonplaceholder.typicode.com",
+        "timeout": 10
+    }
+}

@@ -1,13 +1,16 @@
 # utils/request_utils.py
 import requests
-from config import Config
+from data_loader import config
 
 class RequestClient:
     """封装 requests 库的客户端，统一处理 base_url, headers, timeout 等"""
+
+
     def __init__(self):
+        Config = config['api']
         self.session = requests.Session()
-        self.base_url = Config.BASE_URL
-        self.timeout = Config.TIMEOUT
+        self.base_url = Config.get('base_url')
+        self.timeout = Config.get('timeout')
         # 可以在这里设置全局 headers，如 Content-Type
         self.session.headers.update({"Content-Type": "application/json; charset=UTF-8"})
 
