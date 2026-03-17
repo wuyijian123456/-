@@ -39,5 +39,5 @@ class Database:
 if __name__ == "__main__":
     db = Database("mysql")
     data = db.query("SELECT * FROM redis_data_test2 order by id LIMIT 5 ")
-    print(data)
+    # print(data)
     db.close()
