@@ -4,6 +4,7 @@ import yaml
 import os
 
 
+
 def load_yaml(file_path):
     """
     从指定路径加载并返回 YAML 文件的内容。
@@ -15,7 +16,6 @@ def load_yaml(file_path):
     base_dir = os.path.dirname(os.path.abspath(__file__))
     # 拼接成完整的文件路径
     full_path = os.path.join(base_dir, '..', file_path)
-
     try:
         with open(full_path, 'r', encoding='utf-8') as f:
             data = yaml.safe_load(f)
@@ -73,6 +73,8 @@ def load_config(path="config.json",key=None):
 # 全局配置对象，直接导入就能用
 config = load_config()
 
+
+load_yaml("config.json")
 
 
 
