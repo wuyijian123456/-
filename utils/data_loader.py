@@ -74,7 +74,7 @@ def load_config(path="config.json",key=None):
 config = load_config()
 
 
-load_yaml("config.json")
+
 
 
 
