@@ -4,7 +4,7 @@
 import os
 import subprocess
 import sys
-import allure
+
 
 PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
 ALLURE_RESULTS_DIR = os.path.join(PROJECT_ROOT, "allure-results")
@@ -37,8 +37,8 @@ def main():
     # print("\n📊 正在生成 Allure HTML 报告...")
     #
     # if os.path.exists(ALLURE_REPORT_DIR):
-    #     import shutil
-    #     shutil.rmtree(ALLURE_REPORT_DIR)  # 清理旧报告
+        import shutil
+        shutil.rmtree(ALLURE_REPORT_DIR)  # 清理旧报告
     #
     # # generate_command = [
     # #     "allure", "generate",
@@ -54,8 +54,8 @@ def main():
     # # open_command = ["allure", "open", ALLURE_REPORT_DIR]
     # # subprocess.run(open_command)
     # os.system(f"allure open {ALLURE_REPORT_DIR} ")
-    #
-    # print("\n✅ 所有任务执行完毕！")
+
+    print("\n✅ 所有任务执行完毕！")
 
 
 if __name__ == "__main__":
